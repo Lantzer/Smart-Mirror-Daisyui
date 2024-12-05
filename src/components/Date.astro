@@ -8,27 +8,27 @@
 Static Data
 ************/
 const allTheMonths = [
-  "January",
-  "February",
-  "March",
-  "April",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
   "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
 ];
 const allTheDays = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday"
+  "Sun",
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat"
 ];
 
 /************
@@ -77,11 +77,18 @@ dayOfWeek.textContent = allTheDays[gotDayOfWeek];
 </script>
 
 <!-- HTML -->
-<section class="date card glass">
-    <h1>Date</h1>
+<section class="absolute top-1/2 left-5 date card hover:glass hover:bg-black hover:bg-opacity-30 w-30 h-44 flex flex-col items-start px-4 text-4xl outlined-text"
     <time>
-      <data class="month">Month</data>
-      <data class="dayOfMonth">00</data>, <data class="year">0000</data> -
       <data class="dayOfWeek">SMTWTFS</data>
+      <data class="month">Month</data>
+      <data class="dayOfMonth">00</data>
+      <data class="year">0000</data>
     </time>
   </section>
+
+<style>
+  .outlined-text{
+    color: white;
+    text-shadow: 2px 2px 4px black, 0 0 25px rgba(0,0,0,0.7);
+  }
+</style>
