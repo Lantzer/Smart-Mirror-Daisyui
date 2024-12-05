@@ -23,6 +23,7 @@ const temp = document.querySelector('.temp');
 const icon = document.querySelector('.icon');
 const high = document.querySelector('.high');
 const low = document.querySelector('.low');
+const desc = document.querySelector('.desc');
 const jacket = document.querySelector('.jacket');
 
 
@@ -40,6 +41,7 @@ fetch(url)
   temp.textContent = `${data.main.temp.toFixed(1)} °F`; //Set temp to only 1 decimal point
   high.textContent = `Hi: ${data.main.temp_max.toFixed(1)} °F`;
   low.textContent = `Lo: ${data.main.temp_min.toFixed(1)} °F`;
+  desc.textContent = data.weather[0].description;
   
 
   // Conditions for Jacket Algoritm
@@ -85,8 +87,10 @@ fetch(url)
       <data class="temp text-4xl">Temp</data>
       <data class="high text-xl ">High</data>
       <data class="low text-xl ">Low</data>
+      <data class="desc text-sm text-blue-100/50">Description</data>
       <img class="icon" 
       src="https://via.placeholder.com/150" alt="Placeholder">
+      
       
 </section>
 
