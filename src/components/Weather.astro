@@ -8,9 +8,11 @@ const APIKEY = import.meta.env.PUBLIC_WEATHER_API;
 // API endpoint URL
 const queryEndpoint = 'https://api.openweathermap.org/data/2.5/weather';
 // City
-const queryCity = 'Cheney';
+const queryCity = 'Spokane';
 // Units for Farenheit
 const queryUnits = 'imperial';
+
+
 
 // URL query string
 const url = `${queryEndpoint}?q=${queryCity}&appid=${APIKEY}&units=${queryUnits}`;
@@ -19,35 +21,82 @@ const url = `${queryEndpoint}?q=${queryCity}&appid=${APIKEY}&units=${queryUnits}
 const city = document.querySelector('.city');
 const temp = document.querySelector('.temp');
 const icon = document.querySelector('.icon');
+const high = document.querySelector('.high');
+const low = document.querySelector('.low');
+const jacket = document.querySelector('.jacket');
+
+
 
 // Using fetch to get data
 fetch(url)
 .then( response => response.json() )
 .then( data => {
 
-  // Check-check: Is data good? 
-  console.log( data );
-  
   // Get Container for Weather   
   const weatherContainer = document.querySelector('.weather');
     
-    // Set DOM Elements
-    city.textContent = data.name; 
-    temp.textContent = data.main.temp;
+  // Set DOM Elements
+  city.textContent = data.name; 
+  temp.textContent = `${data.main.temp.toFixed(1)} °F`; //Set temp to only 1 decimal point
+  high.textContent = `Hi: ${data.main.temp_max.toFixed(1)} °F`;
+  low.textContent = `Lo: ${data.main.temp_min.toFixed(1)} °F`;
+  
 
-    icon.setAttribute('src', `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`)
+  // Conditions for Jacket Algoritm
+  const feelsLikeTemp = data.main.feels_like;
+  const weatherCondition = data.weather.main;
+  const windSpeed = data.wind.speed;
+
+  icon.setAttribute('src', `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`)
+
+  // Function to determine if you need a jacket
+  const checkIfJacketIsNeeded = (feelsLikeTemp, weatherCondition, windSpeed) => {
+    // Case 1: If feels like temperature is less than 60°F, always need a jacket
+    if (feelsLikeTemp < 60) {
+      return "You need a jacket due to the cold!";
+    }
+    
+    // Case 2: If weather condition is rain, snow, thunderstorm, or freezing rain, need a jacket
+    if (weatherCondition.includes('rain') || weatherCondition.includes('snow') || 
+        weatherCondition.includes('thunderstorm') || weatherCondition.includes('freezing rain')) {
+      return "You need a jacket because of bad weather!";
+    }
+
+    // Case 3: If wind speed is high (above 15mph), jacket is needed due to wind chill
+    if (windSpeed > 15) {
+      return "You need a jacket due to strong winds!";
+    }
+
+    // If none of the above conditions are met, no jacket is needed
+    return "No jacket needed!";
+  };
+
+  jacket.textContent = checkIfJacketIsNeeded(feelsLikeTemp, weatherCondition, windSpeed);
   
 });
+
+
 </script>
 
 
 <!-- Weather -->
-<section class="weather">
-
-      <h1>Weather</h1>
+<section class="weather absolute top-1/2 right-10 outlined-text text-3xl flex flex-col items-center card hover:glass hover:bg-black hover:bg-opacity-30 w-auto px-4 py-2">
       <data class="city">City</data>
-      <data class="temp">Temp</data>
+      <data class="temp text-4xl">Temp</data>
+      <data class="high text-xl ">High</data>
+      <data class="low text-xl ">Low</data>
       <img class="icon" 
       src="https://via.placeholder.com/150" alt="Placeholder">
       
 </section>
+
+<section>
+  <data class="jacket outlined-text card absolute bottom-5 left-1/2 text-2xl card hover:glass hover:bg-black hover:bg-opacity-30 w-auto px-4 py-2 transform -translate-x-1/2">Jacket</data>
+</section>
+
+<style>
+  .outlined-text{
+    color: white;
+    text-shadow: 2px 2px 4px black, 0 0 25px rgba(0,0,0,0.7);
+  }
+</style>
